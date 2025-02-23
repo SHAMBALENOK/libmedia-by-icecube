@@ -1,5 +1,6 @@
 from asyncio import WindowsSelectorEventLoopPolicy
 
+import database as db
 from g4f.client import Client
 import json
 import time
@@ -24,32 +25,20 @@ def get_movie(promt):
 
 
 def get_desc(path):
-    listy = []
-    file = open(path, 'r')
+    file = open(path, 'r+')
     items = json.load(file)
     for item in items:
-        info = {'name': item['title'], 'date': item['release_date']}
-        listy.append(info)
-
-    movies = []
-    for item in listy:
-        name = item['name']
-        date = item['date'].replace('Released', '')
+        url = item['url']
+        name = item['title']
+        date = item['release_date'].replace('Released', '')
         client = Client()
         response = client.chat.completions.create(
             model="qwen-2.5-coder-32b",
             messages=[{"role": "user", "content": f'Привет можешь дать мне описание фильма под названием {name}, '
-                                                  f'вышедшего в {date}, лимит символов: 200'}],
+                                                  f'вышедшего в {date}, лимит символов: 180'}],
             web_search=False
         )
-        info = {'name': name, 'date': date, 'description': response.choices[0].message.content.replace('Конечно! ', '')}
-        movies.append(info)
-        print(info)
-    # print(response.choices[0].message.content)
-    return movies
+        db.add_cinema(name, date, response.choices[0].message.content.replace('Конечно! ', ''))
+        items.remove(item)
 
-
-data = get_desc('movie_info.json')
-print(data)
-with open("db.txt", "w") as file:
-    file.write(data)
+get_desc('movie_info.json')
