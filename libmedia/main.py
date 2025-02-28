@@ -18,12 +18,15 @@ listy = None
 
 app.mount("/public", StaticFiles(directory="public"), name="public")
 
+
 @app.get("/")
 async def index():
     return Response(open("public/index.html", encoding="utf-8").read(), media_type="text/html")
 
+
 class TextInput(BaseModel):
     text: str
+
 
 @app.post('/process-text')
 async def process_text(input_data: TextInput):
@@ -37,10 +40,10 @@ async def process_text(input_data: TextInput):
     for i in info_list:
         if i is None:
             info_list[info_list.index(i)] = {'name': movie_data[info_list.index(i)],
-                 'date': 'Извините, но мы не смогли найти дату',
-                 'desc': 'Извините, но мы не нашли описания',
-                 'image_url': 'https://images.pexels.com/photos/705425/pexels-photo-705425.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-                 'url': 'http://127.0.0.1:8000'
+                                             'date': 'Извините, но мы не смогли найти дату',
+                                             'desc': await ai.get_desc(movie_data[info_list.index(i)]),
+                                             'image_url': 'https://images.pexels.com/photos/705425/pexels-photo-705425.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
+                                             'url': 'http://127.0.0.1:8000'
                                              }
 
     processed_text = []
@@ -84,5 +87,3 @@ async def process_text(input_data: TextInput):
         "img_src5": img_src[4],
         "img_src6": img_src[5]
     }
-
-

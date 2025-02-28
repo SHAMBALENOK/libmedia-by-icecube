@@ -1,6 +1,5 @@
 from asyncio import WindowsSelectorEventLoopPolicy
 import database as db
-from g4f.client import Client
 from g4f.client import AsyncClient
 import json
 import time
@@ -29,18 +28,19 @@ async def get_movie(promt):
 
     return response.choices[0].message.content.split('; ')[1].split('. ')
 
-def get_desc(path):
-    file = open(path, 'r+')
-    items = json.load(file)
-    for item in items:
-        url = item['url']
-        name = item['title']
-        date = item['release_date'].replace('Released', '')
-        client = Client()
-        response = client.chat.completions.create(
-            model="qwen-2.5-coder-32b",
-            messages=[{"role": "user", "content": f'Привет можешь дать мне описание фильма под названием {name}, лимит символов: 180'}],
-            web_search=True
-        )
-        db.add_cinema(name, date, response.choices[0].message.content.replace('Конечно! ', ''))
-        items.remove(item)
+async def get_desc(promt):
+    client = AsyncClient()
+
+    response = await client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user",
+                   "content": f'Привет можешь дать мне описание фильма под названием {promt}, лимит символов: 180'}],
+        web_search=False
+    )
+
+    try:
+        test = response.choices[0].message.content + ' _test'
+    except Exception:
+        await get_desc(promt)
+
+    return response.choices[0].message.content
