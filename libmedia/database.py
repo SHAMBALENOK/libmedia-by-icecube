@@ -1,9 +1,9 @@
-from sqlalchemy import create_engine, MetaData, Table
+from sqlalchemy import create_engine, MetaData, Table, select
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import Column, Integer, String
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
+SQLALCHEMY_DATABASE_URL = "sqlite:///./data.db"
 engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
 
 
@@ -15,7 +15,9 @@ class Cinema(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(200))
     date = Column(String(200))
-    desc = Column(String(200))
+    desc = Column(String(50000))
+    url = Column(String(50000))
+    image_url = Column(String(100000))
 
     def __repr__(self):
         return f"<Cinema(id={self.id}, name='{self.name}', date='{self.date}', desc='{self.desc}')>"
@@ -24,9 +26,9 @@ class Cinema(Base):
 Session = sessionmaker(bind=engine)
 
 # Функция для добавления информации в таблицу Cinema
-def add_cinema(name, date, desc):
+def add_cinema(name, date, desc, url, image_url):
     session = Session()
-    cinema = Cinema(name=name, date=date, desc=desc)
+    cinema = Cinema(name=name, date=date, desc=desc, url=url, image_url=image_url)
     session.add(cinema)
     session.commit()
     print(f"Cinema added successfully: {cinema}")
@@ -52,6 +54,11 @@ def clear_table(table_name, db_url):
         print(f"Таблица '{table_name}' очищена.")
     else:
         print(f"Таблицы с именем '{table_name}' не существует.")
+
+def execute(name):
+    session = Session()
+    movie=session.query(Cinema).filter(Cinema.name == name).first()
+    return movie
 
 # Создаем все таблицы в базе данных
 Base.metadata.create_all(engine)

@@ -1,26 +1,36 @@
 import requests
 from bs4 import BeautifulSoup as BS
+import json
+import database as db
 
-# url = 'https://www.kinopoisk.ru/film/535341/'
-# class_ = 'styles_title__65Zwx styles_root__l9kHe styles_root__5sqsd styles_rootInDark__SZlor'
-class_ = 'hero__primary-text'  # 'hero__primary-text'
-url = 'https://www.imdb.com'
+def get_desc(path):
+    class_ = 'synopsis-wrap'
+    file = open(path, 'r+')
+    items = json.load(file)
+    for item in items:
+        try:
+            url = item['url']
+            r = requests.get(url)
+            html = BS(r.text, 'html.parser')
+            t = html.find('div', class_)
+            name = item['title']
+            date = item['release_date']
+            images =  html.find_all('img')
+            image_urls = []
+            for image in images:
+                image_urls.append(image.get('src'))
+            db.add_cinema(name, date, t.text.replace('Synopsis', ''), url, image_urls[10])
+        except AttributeError:
+            url = item['url']
+            r = requests.get(url)
+            html = BS(r.text, 'html.parser')
+            name = item['title']
+            date = item['release_date']
+            images =  html.find_all('img')
+            image_urls = []
+            for image in images:
+                image_urls.append(image.get('src'))
+            db.add_cinema(name, date, 'К сожалению мы не смогли найти описание.', url, image_urls[10])
 
-# url = 'https://yandex.ru/pogoda/kaliningrad'
-# class_ = 'temp__value temp__value_with-unit'
 
-while True:
-    r = requests.get(url)
-
-    html = BS(r.text, 'html.parser')
-    # t = html.find('h1', class_)
-
-    print(r)
-
-    t = html.findAll('span')
-    print(t)
-
-    # if t is not None:
-    #     break
-
-print(t.text)
+get_desc('movie_info.json')
