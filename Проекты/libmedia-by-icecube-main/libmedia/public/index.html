@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>libmedia</title>
+</head>
+
+<style>
+
+  body{
+    padding-top: 75px;
+  }
+  
+  .search-container{
+    width: 490px;
+    display: block;
+    margin: 0 auto;
+  }
+  
+  input#input-text{
+    margin: 0 auto;
+    width: 100%;
+    height: 45px;
+    padding: 0 20px;
+    font-size: 1rem;
+    border: 1px solid #D0CFCE;
+    outline: none;
+    &:focus{
+      border: 1px solid #008ABF;
+      transition: 0.35s ease;
+      color: #008ABF;
+      &::-webkit-input-placeholder{
+        transition: opacity 0.45s ease; 
+        opacity: 0;
+       }
+      &::-moz-placeholder {
+        transition: opacity 0.45s ease; 
+        opacity: 0;
+       }
+      &:-ms-placeholder {
+       transition: opacity 0.45s ease; 
+       opacity: 0;
+       }    
+     }
+   }
+  
+  .search-icon{
+    position: relative;
+    float: right;
+    width: 75px;
+    height: 75px;
+    top: -62px;
+    right: -45px;
+  } 
+
+  .container {
+    align-items: center;
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+ }
+ 
+ .cta {
+    background: #333;
+    box-shadow: 3px 3px 20px rgba(0, 0, 0, 0.2);
+    height: 450px;
+    overflow: hidden;
+    position: relative;
+    width: 300px;
+    
+    &:hover {
+       
+       img {
+          top: -10%;
+          filter: brightness(70%);
+       }
+       
+       .text {
+          bottom: 0;
+       }
+    }
+    
+    img {
+       bottom: 0;
+       filter: brightness(100%);
+       left: 0;
+       position: absolute;
+       right: 0;
+       top: 0;
+       transition: 0.5s ease-in-out;
+       width: 115%;
+    }
+    
+    .text {
+       bottom: -40%;
+       padding: 15px;
+       position: absolute;
+       transition: 0.5s ease-in-out;
+ 
+       h2 {
+          color: #fff;
+          display: inline-block;
+          font-weight: 300;
+          margin-bottom: 5px;
+          position: relative;
+       }
+       
+       p {
+          color: #fff;
+          font-weight: 300;
+       }
+    }
+ }
+
+  .cinema {
+    opacity: 0;
+  }
+
+</style>
+
+<body>
+
+  <form class="search-container">
+    <input type="text" id="input-text" placeholder="Ищите фильмы и сериалы по описанию">
+    <a href="#"><img class="search-icon" src="http://www.endlessicons.com/wp-content/uploads/2012/12/search-icon.png" onclick="submitText()"></a>
+  </form>
+  
+  <ul style="display: flex; list-style-type: none;", class="content-container">
+    <li style="margin-right: 5px;">
+      <div class="container">
+        <div class="cta">
+           <img style="filter: blur(8px) brightness(40%);" src="https://images.pexels.com/photos/705425/pexels-photo-705425.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="" id="id_img1">
+           <div class="text">
+              <h2 href=""  id="id_title1"></h2>
+              <p id="id_desc1"></p>
+           </div>
+        </div>
+     </div>
+    </li>
+    <li style="margin-right: 5px;">
+      <div class="container">
+        <div class="cta">
+           <img style="filter: blur(4px) brightness(40%);" src="https://images.pexels.com/photos/705425/pexels-photo-705425.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="" id="id_img2">
+           <div class="text">
+              <h2 href=""  id="id_title2"></h2>
+              <p id="id_desc2"></p>
+           </div>
+        </div>
+     </div>
+    </li>
+    <li style="margin-right: 5px;">
+      <div class="container">
+        <div class="cta">
+           <img style="filter: blur(4px) brightness(40%);" src="https://images.pexels.com/photos/705425/pexels-photo-705425.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="" id="id_img3">
+           <div class="text">
+              <h2 href=""  id="id_title3"></h2>
+              <p id="id_desc3"></p>
+           </div>
+        </div>
+     </div>
+    </li>
+    <li style="margin-right: 5px;">
+      <div class="container">
+        <div class="cta">
+           <img style="filter: blur(4px) brightness(40%);" src="https://images.pexels.com/photos/705425/pexels-photo-705425.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="" id="id_img4">
+           <div class="text">
+              <h2 href=""  id="id_title4"></h2>
+              <p id="id_desc4"></p>
+           </div>
+        </div>
+     </div>
+    </li>
+    <li style="margin-right: 5px;">
+      <div class="container">
+        <div class="cta">
+           <img style="filter: blur(4px) brightness(40%);" src="https://images.pexels.com/photos/705425/pexels-photo-705425.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="" id="id_img5">
+           <div class="text">
+              <h2 href=""  id="id_title5"></h2>
+              <p id="id_desc5"></p>
+           </div>
+        </div>
+     </div>
+    </li>
+    <li style="margin-right: 5px;">
+      <div class="container">
+        <div class="cta">
+           <img style="filter: blur(4px) brightness(40%);" src="https://images.pexels.com/photos/705425/pexels-photo-705425.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" alt="" id="id_img6">
+           <div class="text">
+              <h2 href=""  id="id_title6"></h2>
+              <p id="id_desc6"></p>
+           </div>
+        </div>
+     </div>
+    </li>
+  </ul>
+
+</body>
+
+<script>
+
+   async function submitText() {
+      const inputField = document.getElementById('input-text');
+      const inputValue = inputField.value;
+
+      if (inputValue.trim().length > 0) {
+          const response = await fetch('/process-text', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ text: inputValue })
+          });
+
+          if (response.ok) {
+              const data = await response.json();
+              document.getElementById('id_title1').innerText = data.processed_text1;
+              document.getElementById('id_title2').innerText = data.processed_text2;
+              document.getElementById('id_title3').innerText = data.processed_text3;
+              document.getElementById('id_title4').innerText = data.processed_text4;
+              document.getElementById('id_title5').innerText = data.processed_text5;
+              document.getElementById('id_title6').innerText = data.processed_text6;
+
+              document.getElementById('id_desc1').innerText = data.processed_desc1;
+              document.getElementById('id_desc2').innerText = data.processed_desc2;
+              document.getElementById('id_desc3').innerText = data.processed_desc3;
+              document.getElementById('id_desc4').innerText = data.processed_desc4;
+              document.getElementById('id_desc5').innerText = data.processed_desc5;
+              document.getElementById('id_desc6').innerText = data.processed_desc6;
+
+              document.getElementById('id_img1').src = data.img_src1;
+              document.getElementById('id_img2').src = data.img_src2;
+              document.getElementById('id_img3').src = data.img_src3;
+              document.getElementById('id_img4').src = data.img_src4;
+              document.getElementById('id_img5').src = data.img_src5;
+              document.getElementById('id_img6').src = data.img_src6;
+          } else {
+              console.error('Ошибка при отправке текста на сервер.');
+          }
+      } else {
+          console.warn('Введите текст в поле перед отправкой.');
+      }
+  }
+
+</script>
+</html>
