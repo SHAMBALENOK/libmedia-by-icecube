@@ -23,11 +23,18 @@ class Cinema(Base):
         return f"<Cinema(id={self.id}, name='{self.name}', date='{self.date}', desc='{self.desc}')>"
 
 # Создаем фабрику сессий
-Session = sessionmaker(bind=engine)
+Session = sessionmaker(autoflush=False, bind=engine)
+
+def get_db():
+    db = Session()
+    try:
+        yield db
+    finally:
+        db.close()
 
 # Функция для добавления информации в таблицу Cinema
 def add_cinema(name, date, desc, url, image_url):
-    session = Session()
+    session = get_db()
     cinema = Cinema(name=name, date=date, desc=desc, url=url, image_url=image_url)
     session.add(cinema)
     session.commit()
@@ -55,7 +62,8 @@ def clear_table(table_name, db_url):
     else:
         print(f"Таблицы с именем '{table_name}' не существует.")
 
-def execute(name):
+async def get_movie_from_db(name):
+    # session = get_db()
     session = Session()
     movie=session.query(Cinema).filter(Cinema.name == name).first()
     return movie

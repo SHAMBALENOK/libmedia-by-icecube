@@ -2,7 +2,7 @@ from asyncio import WindowsSelectorEventLoopPolicy
 from g4f.client import AsyncClient
 import database as db
 import asyncio
-import translation as trans
+import test
 
 asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())
 
@@ -11,9 +11,13 @@ async def get_desc_if_none(list):
     answ = []
 
     for i in list:
-        if await db.get_movie_from_db(i):
-            answ.append(await db.get_movie_from_db(i))
+        print(i, 'processing info from db')
+        # if await db.get_movie_from_db(i):
+        #     answ.append(await db.get_movie_from_db(i))
+        if await test.search_IMDb(i) is not None:
+            answ.append(await test.search_IMDb(i))
         else:
+            print(f'failed to find {i} in db, generating description')
             response = await client.chat.completions.create(
                 model="gpt-4",
                 messages=[{"role": "user",
@@ -41,6 +45,8 @@ async def get_desc_if_none(list):
 async def main(promt):
     client = AsyncClient()
 
+    print('startAI')
+
     response = await client.chat.completions.create(
         model="gpt-4",
         messages=[
@@ -54,8 +60,10 @@ async def main(promt):
     )
 
     #print(response.choices[0].message.content.split(';'))
+    print('finishAI')
 
     info_list = await get_desc_if_none(response.choices[0].message.content.split(';'))
+    print('info processing completed')
 
     processed_text = []
     for i in info_list:
@@ -67,7 +75,7 @@ async def main(promt):
     processed_desc = []
     for i in info_list:
         try:
-            processed_desc.append(trans.translate(i.desc))
+            processed_desc.append(i.desc)
         except AttributeError:
             processed_desc.append(i['desc'])
 
