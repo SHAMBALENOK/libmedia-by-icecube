@@ -8,10 +8,7 @@ from fastapi.responses import JSONResponse, FileResponse, HTMLResponse
 from fastapi.encoders import jsonable_encoder
 from typing import Optional
 from pydantic import BaseModel
-import database as db
 import ai
-import translation as trans
-import test
 
 app = FastAPI()
 
@@ -31,7 +28,7 @@ class TextInput(BaseModel):
 
 @app.post('/process-text')
 async def process_text(input_data: TextInput):
-    return await test.main(input_data.text)
+    return await ai.main(input_data.text)
 
 
 
